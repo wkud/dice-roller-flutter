@@ -1,25 +1,56 @@
+import 'dart:math';
 import 'package:flutter/material.dart';
-import './dice_button.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key key, this.title}) : super(key: key);
 
+  static const diceTypes = [100, 20, 12, 10, 8, 6, 4, 3, 2];
   final String title;
-  final diceTypes = [100, 20, 12, 10, 8, 6, 4, 3, 2];
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  // final buttons = ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd3', 'd2'];
-  // final buttons = <DiceButton>[DiceButton()];
-  final List<String> items = List<String>.generate(10000, (i) => "Item $i");
-  // final buttons =
-  //     List<DiceButton>.generate(9, (int index) => DiceButton(diceTypes[index]));
+  var _equationString = '';
+  var _totalResultString = '_';
+  var _totalResult = 0;
+  var _rolled = false;
 
-  void _incrementCounter() {
-    setState(() {});
+  void _onRollButtonClick() {
+    setState(() {
+      final oldRolled = _rolled;
+      tryClear();
+
+      _totalResultString = oldRolled ? '_' : "= $_totalResult";
+      _rolled = true;
+    });
+  }
+
+  void onDiceButtonClick(int diceType) {
+    setState(() {
+      tryClear();
+
+      _totalResult += randomize(diceType);
+
+      if (_equationString.isNotEmpty) {
+        _equationString += '+';
+      }
+      _equationString += "d$diceType";
+    });
+  }
+
+  void tryClear() {
+    if (_rolled) {
+      _equationString = '';
+      _totalResultString = '_';
+      _totalResult = 0;
+      _rolled = false;
+    }
+  }
+
+  int randomize(int diceType) {
+    return new Random().nextInt(diceType) + 1;
   }
 
   @override
@@ -37,7 +68,9 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 110,
               padding: EdgeInsets.only(left: 20, right: 20, top: 20),
               child: Text(
-                "Let's role some dice!",
+                _equationString.isEmpty
+                    ? "Let's role some dice!"
+                    : _equationString,
                 overflow: TextOverflow.clip,
                 style: TextStyle(
                   fontSize: 20,
@@ -50,8 +83,7 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Align(
                 alignment: Alignment.centerRight,
                 child: Text(
-                  '= 120',
-                  // '$_counter',
+                  _totalResultString,
                   style: TextStyle(
                     fontSize: 80,
                     color: Colors.black.withOpacity(0.5),
@@ -72,8 +104,10 @@ class _MyHomePageState extends State<MyHomePage> {
                   9,
                   (index) => ElevatedButton(
                     style: ButtonStyle(),
-                    onPressed: () {},
-                    child: Text('d${widget.diceTypes[index]}'),
+                    onPressed: () {
+                      onDiceButtonClick(MyHomePage.diceTypes[index]);
+                    },
+                    child: Text('d${MyHomePage.diceTypes[index]}'),
                   ),
                 ),
               ),
@@ -84,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Container(
                     height: 50,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: _onRollButtonClick,
                       child: Text(
                         'Roll',
                         style: TextStyle(fontSize: 20),
@@ -97,11 +131,6 @@ class _MyHomePageState extends State<MyHomePage> {
           ],
         ),
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: _incrementCounter,
-      //   tooltip: 'Increment',
-      //   child: Icon(Icons.add),
-      // ),
     );
   }
 }
