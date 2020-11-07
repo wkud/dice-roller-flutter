@@ -29,57 +29,79 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Container(
-        padding: EdgeInsets.only(left: 20, right: 20, top: 20),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            Text(
-              "Let's role some dice!",
-              style:
-                  TextStyle(fontSize: 20, color: Colors.black.withOpacity(0.5)),
-            ),
-            Align(
-              alignment: Alignment.centerRight,
+            Container(
+              height: 110,
+              padding: EdgeInsets.only(left: 20, right: 20, top: 20),
               child: Text(
-                '= 120',
-                // '$_counter',
+                "Let's role some dice!",
+                overflow: TextOverflow.clip,
                 style: TextStyle(
-                    fontSize: 80, color: Colors.black.withOpacity(0.5)),
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
+                ),
               ),
             ),
             Container(
-              height: 190,
-              width: 1000,
-              child: GridView.count(
-                childAspectRatio: 2,
-                crossAxisCount: 3,
-                mainAxisSpacing: 20,
-                crossAxisSpacing: 30,
-                children: List.generate(
-                  9,
-                  (index) => SizedBox(
-                    width: 10.0,
-                    height: 80.0,
-                    child: ElevatedButton(
-                      style: ButtonStyle(),
-                      onPressed: () {},
-                      child: const Text(
-                        'd100',
-                      ),
-                    ),
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '= 120',
+                  // '$_counter',
+                  style: TextStyle(
+                    fontSize: 80,
+                    color: Colors.black.withOpacity(0.5),
                   ),
                 ),
               ),
             ),
+            Container(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              height: 190,
+              width: 1000,
+              child: GridView.count(
+                childAspectRatio: 2.2,
+                crossAxisCount: 3,
+                mainAxisSpacing: 20,
+                crossAxisSpacing: 10,
+                children: List.generate(
+                  9,
+                  (index) => ElevatedButton(
+                    style: ButtonStyle(),
+                    onPressed: () {},
+                    child: Text('d${widget.diceTypes[index]}'),
+                  ),
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Expanded(
+                  child: Container(
+                    height: 50,
+                    child: ElevatedButton(
+                      onPressed: () {},
+                      child: Text(
+                        'Roll',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: _incrementCounter,
+      //   tooltip: 'Increment',
+      //   child: Icon(Icons.add),
+      // ),
     );
   }
 }
