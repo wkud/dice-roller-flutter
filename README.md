@@ -1,6 +1,6 @@
 # DiceRoller
 
-A new Flutter project.
+Dice roller mobile app for Table Top RPGs. Made in Flutter.
 
 ## Getting Started
 
